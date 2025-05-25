@@ -1,0 +1,101 @@
+🔧 Project 1: NGINX Installation, Configuration & Reverse Proxy Setup
+📝 Overview
+This project demonstrates how to install, configure, and manage the NGINX web server on CentOS. The focus is on:
+
+Serving static content,
+
+Managing the NGINX service,
+
+Configuring custom virtual hosts, and
+
+Setting up a reverse proxy environment between two machines.
+
+🚀 Objectives
+Install and verify NGINX on CentOS
+
+Configure and serve static content
+
+Set up a reverse proxy between two servers
+
+Test and validate the configuration
+
+🖥️ Environment
+OS: CentOS 8 (Stream or similar)
+
+Tools: dnf, systemctl, vim, nginx
+
+Network: Two virtual machines or physical servers with local IPs (e.g., 10.0.0.177, 10.0.0.57)
+
+🔨 Steps to Install & Configure NGINX
+✅ 1. Check and Install NGINX
+
+rpm -qa | grep nginx  # Check if NGINX is already installed
+dnf install nginx -y  # Install if not already installed
+▶️ 2. Start and Enable the NGINX Service
+
+- systemctl start nginx
+- systemctl enable nginx
+🔥 3. Disable the Firewall (Lab Environment Only)
+
+- systemctl stop firewalld
+- systemctl disable firewalld
+
+🌐 4. Configure Website Hosting
+a. Create the directory structure
+- mkdir -p /var/www/centos/html
+- cd /var/www/centos/html
+- echo "Hello from CentOS!" > index.html
+b. Add virtual host config
+- Edit /etc/nginx/conf.d/centos.conf:
+
+server {
+    listen 80;
+    server_name 10.0.0.177;
+
+    location / {
+        root /var/www/centos/html;
+        index index.html;
+    }
+}
+c. Restart and Test
+- nginx -t                    
+- systemctl restart nginx    
+- Access the site via browser or curl: http://10.0.0.177
+
+🔁 5. Set Up Reverse Proxy
+a. On the first NGINX server (Proxy):
+Update /etc/nginx/conf.d/centos.conf:
+
+server {
+    listen 80;
+    server_name 10.0.0.177;
+
+    location / {
+        proxy_pass http://10.0.0.57;  # IP of the second server
+    }
+}
+b. On the second NGINX server (Content Server):
+Serve static content from /var/www/centos/html
+
+Ensure NGINX is running and accessible
+
+🔍 6. Validate Reverse Proxy Setup
+Restart NGINX on both machines:
+
+- systemctl restart nginx
+- Access http://10.0.0.177 — you should see content served from 10.0.0.57.
+
+📷 Diagram
+
+User
+ ↓
+[ NGINX Proxy ] ——> [ Backend NGINX Web Server ]
+     (10.0.0.177)        (10.0.0.57)
+
+✅ Outcomes
+- Successfully configured NGINX as both a standard web server and a reverse proxy
+
+- Understood service management (systemctl), directory setup, and virtual hosting
+
+- Practiced layered server design for scalable deployments
+
