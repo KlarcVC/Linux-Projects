@@ -1,0 +1,118 @@
+# 🐙 Squid Proxy Server on Linux
+
+## 🧠 Objective
+
+A **proxy server** is an application that acts as an intermediary between a client requesting a resource and the server providing that resource. Squid Proxy enhances security, speeds up browsing, and controls access.
+
+### ✨ Benefits:
+- Hides real IP location
+- Enables secure browsing
+- Increases browsing speed with caching
+- Controls access to blocked or restricted sites
+
+## 🛠️ Technologies Used
+
+- OS: Linux (CentOS-based, assumed from `dnf`)
+- Tool: Squid
+- Config File: `/etc/squid/squid.conf`
+- Default Port: `3128`
+
+## 📦 Installation & Configuration
+
+### 🔍 Step 1: Check if Squid is installed
+```bash
+rpm -qa | grep squid
+
+# 🐙 Squid Proxy Server on Linux
+
+## 🧠 Objective
+
+A **proxy server** is an application that acts as an intermediary between a client requesting a resource and the server providing that resource. Squid Proxy enhances security, speeds up browsing, and controls access.
+
+### ✨ Benefits:
+- Hides real IP location
+- Enables secure browsing
+- Increases browsing speed with caching
+- Controls access to blocked or restricted sites
+
+## 🛠️ Technologies Used
+
+- OS: Linux (CentOS-based, assumed from `dnf`)
+- Tool: Squid
+- Config File: `/etc/squid/squid.conf`
+- Default Port: `3128`
+
+## 📦 Installation & Configuration
+
+### 🔍 Step 1: Check if Squid is installed
+```bash
+rpm -qa | grep squid
+
+📥 Step 2: Install Squid (if not installed)
+
+bash
+dnf install squid* -y
+
+▶️ Step 3: Start & Enable the Service
+
+bash
+systemctl start squid
+systemctl enable squid
+systemctl status squid
+
+⚙️ Step 4: Configure squid.conf
+
+Open the configuration file:
+
+bash
+vi /etc/squid/squid.conf
+
+•    Scroll to the HTTP port section (3128).
+    •    Scroll up to view the ACL (Access Control List) section.
+    •    Comment out default ACLs (we’ll add custom ones).
+
+Example Custom ACL:
+
+conf
+acl localnet src 10.x.x.x/24
+http_access allow localnet
+
+✅ This allows HTTP access to all devices within the 10.x.x.x/24 subnet.
+
+🔒 Step 5: Block Specific Sites
+    1.    Create a file to list sites to block:
+
+bash
+vi /etc/squid/blocksites
+
+add:
+
+.facebook.com
+.youtube.com
+
+    2.    Re-open squid.conf and add:
+
+conf
+acl blocksites url_regex "/etc/squid/blocksites"
+http_access deny blocksites
+
+3.    Save and exit:
+
+bash
+:wq
+
+🧪 Testing
+    •    Try browsing to blocked sites on a client machine using the proxy. They should be denied.
+    •    Check the proxy access logs:
+
+bash
+tail -f /var/log/squid/access.log
+
+🛠️ Management
+    •    Restart: systemctl restart squid
+    •    Check logs: cat /var/log/squid/access.log
+    •    Reload config: squid -k reconfigure
+
+📝 Notes
+    •    Remember to open port 3128 on your firewall if needed.
+    •    Squid configuration is powerful; explore more ACL rules for fine-grained control.
