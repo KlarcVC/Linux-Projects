@@ -1,0 +1,43 @@
+# Linux Mini Project: Server Management with Cockpit
+
+## 🔧 Project Overview
+This project explores the installation, configuration, and practical use of **Cockpit**, a server administration tool sponsored by Red Hat. Cockpit provides a modern, user-friendly web interface to monitor and manage Linux servers effectively.
+
+## 🖥️ What is Cockpit?
+Cockpit is a web-based graphical interface that allows system administrators to:
+- Monitor system performance (CPU, memory, disk usage)
+- Manage users and services
+- Add/remove user accounts
+- Start/stop systemd services
+- Check system logs
+- Execute terminal commands
+- Check network connectivity
+
+It’s a lightweight, accessible, and open-source alternative for managing servers.
+
+## ⚙️ Installation Steps
+
+### 1. Install Cockpit
+**For Red Hat / CentOS:**
+
+- yum install cockpit -y
+
+For Ubuntu/Debian:
+
+- apt-get install cockpit -y
+
+2. Start and Enable the Service
+
+- systemctl start cockpit
+- systemctl enable cockpit
+
+3. Access Cockpit via Web Browser
+http://[your_server_IP]:9090
+Log in with the root username and password or any admin account.
+
+🧪 Additional Tasks Completed
+Used ping to test external connectivity
+
+Checked active network interfaces
+
+Explored Cockpit modules for system monitoring
